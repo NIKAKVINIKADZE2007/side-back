@@ -5,10 +5,12 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { userSchema } from 'src/users/schema/user.schema';
+import { NodeMailerModule } from 'src/node-mailer/node-mailer.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    NodeMailerModule,
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
