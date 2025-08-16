@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { NodeMailerService } from 'src/node-mailer/node-mailer.service';
 import { VerificationDto } from './dto/verification.dto';
 import { SignInDto } from './dto/sign-in.dto';
+import { ResendVerificationDto } from './dto/resendCode.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,12 +43,14 @@ export class AuthService {
 
     await this.emailSender.sendEmailText(email, 'Verification Code', otpCode);
 
-    return 'verify email';
+    return { message: 'verify email' };
   }
 
   async verifyEmail({ email, otpCode }: VerificationDto) {
     const user = await this.userModel.findOne({ email });
     if (!user) throw new NotFoundException('user not found');
+
+    if (user.isVerified) throw new BadRequestException('user already verified');
 
     if (user.otpCodeValidateDate < new Date()) {
       throw new BadRequestException('otpCode expired');
@@ -97,7 +100,7 @@ export class AuthService {
     return { accsessToken };
   }
 
-  async resendVerificationCode(email) {
+  async resendVerificationCode({ email }: ResendVerificationDto) {
     const user = await this.userModel.findOne({ email });
     if (!user) throw new BadRequestException('user not found');
 
@@ -117,6 +120,6 @@ export class AuthService {
       otpCode,
     );
 
-    return 'Verify Email';
+    return { message: 'Verify Email' };
   }
 }
