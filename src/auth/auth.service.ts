@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInDto) {
-    const user = await this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email }).select('+password');
     if (!user) throw new NotFoundException('invalid credentials');
 
     if (!user.isVerified) throw new BadRequestException('user not verified');

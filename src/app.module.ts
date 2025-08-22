@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { NodeMailerModule } from './node-mailer/node-mailer.module';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { InvoicesModule } from './invoices/invoices.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       },
     }),
     NodeMailerModule,
+    InvoicesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class User {
@@ -19,6 +20,9 @@ export class User {
 
   @Prop({ type: String })
   otpCode: string;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'invoice' }] })
+  invoices: Types.ObjectId[];
 
   @Prop({ type: Date })
   otpCodeValidateDate: Date;
